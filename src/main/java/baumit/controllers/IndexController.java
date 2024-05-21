@@ -12,14 +12,9 @@ public class IndexController  {
 
 
     @GetMapping("")
-    @Operation(summary = "Create a new user")
+    @Operation(summary = "demo api")
     private String index(Model model){
         return "index";
-    }
-    @GetMapping("/2")
-    @Operation(summary = "demo")
-    private String index2(){
-        return "yello";
     }
 
 
