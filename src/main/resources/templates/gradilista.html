@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Places</title>
+</head>
+<body>
+
+<h1>List of Places</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>City</th>
+        <th>Country</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iterate over the list of places and display each place -->
+    <tr th:each="construction : ${constructions}">
+        <td th:text="${construction.naziv}">Naziv</td>
+        <td th:text="${construction.adresa}">Adresa</td>
+        <td th:text="${construction.idGradilista}">id</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
