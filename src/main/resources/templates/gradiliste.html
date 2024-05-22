@@ -21,17 +21,18 @@
         <tbody>
         <tr id="constructionRow">
             <td>
-                <span th:text="${construction.naziv}" class="view-mode"></span>
-                <input type="text" th:value="${construction.naziv}" th:field="*{construction.naziv}" class="edit-mode" style="display: none;">
+                <span th:text="${construction.naziv}" class="view-mode-master"></span>
+                <input type="text" th:value="${construction.naziv}" th:field="*{construction.naziv}" class="edit-mode-master" style="display: none;">
             </td>
             <td>
-                <span th:text="${construction.adresa}" class="view-mode"></span>
-                <input type="text" th:value="${construction.adresa}" th:field="*{construction.adresa}" class="edit-mode" style="display: none;">
+                <span th:text="${construction.adresa}" class="view-mode-master"></span>
+                <input type="text" th:value="${construction.adresa}" th:field="*{construction.adresa}" class="edit-mode-master" style="display: none; width: 300px;">
             </td>
             <td>
-                <button type="button" onclick="toggleEditMode('constructionRow')">Edit</button>
+                <button type="button"  onclick="toggleEditModeMaster('constructionRow')">Edit</button>
             </td>
         </tr>
+
         </tbody>
     </table>
 
@@ -92,10 +93,10 @@
             })
             .catch(error => console.error('Error:', error));
     }
-    function toggleEditMode(rowId) {
+    function toggleEditModeMaster(rowId) {
         var row = document.getElementById(rowId);
-        var viewModeElements = row.querySelectorAll('.view-mode');
-        var editModeElements = row.querySelectorAll('.edit-mode');
+        var viewModeElements = row.querySelectorAll('.view-mode-master');
+        var editModeElements = row.querySelectorAll('.edit-mode-master');
 
         // Check if any element in edit mode is visible (indicating the row is in edit mode)
         var isInEditMode = Array.from(editModeElements).some(function(element) {
