@@ -1,5 +1,6 @@
 package baumit.controllers;
 
+import baumit.dtos.GradilisteDto;
 import baumit.dtos.GradilisteWithTasksDto;
 import baumit.models.Gradiliste;
 import baumit.services.GradilisteService;
@@ -19,7 +20,7 @@ public class GradilistaController {
 
     @GetMapping("")
     public String showGradilista(Model model){
-        List<GradilisteWithTasksDto> gradilista = gradilisteService.allConstructionsWithTasksDtos();
+        List<GradilisteDto> gradilista = gradilisteService.allConstructionsDtos();
         model.addAttribute("constructions",gradilista);
         return "gradilista";
     }

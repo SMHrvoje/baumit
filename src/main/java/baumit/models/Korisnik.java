@@ -2,7 +2,9 @@ package baumit.models;
 
 import jakarta.persistence.*;
 
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Korisnik {
@@ -19,6 +21,17 @@ public class Korisnik {
     @Basic
     @Column(name = "iduloge")
     private int iduloge;
+
+    @OneToMany(mappedBy = "idkorisnika")
+    private Set<Gradiliste> gradilistes = new LinkedHashSet<>();
+
+    public Set<Gradiliste> getGradilistes() {
+        return gradilistes;
+    }
+
+    public void setGradilistes(Set<Gradiliste> gradilistes) {
+        this.gradilistes = gradilistes;
+    }
 
     public String getKorisnickoime() {
         return korisnickoime;

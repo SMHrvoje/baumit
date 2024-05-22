@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradilišta</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container">
+    <h2> gradilište ISGT</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Naziv</th>
+            <th>Adresa</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr id="constructionRow">
+            <td>
+                <span th:text="${construction.naziv}" class="view-mode"></span>
+                <input type="text" th:value="${construction.naziv}" th:field="*{construction.naziv}" class="edit-mode" style="display: none;">
+            </td>
+            <td>
+                <span th:text="${construction.adresa}" class="view-mode"></span>
+                <input type="text" th:value="${construction.adresa}" th:field="*{construction.adresa}" class="edit-mode" style="display: none;">
+            </td>
+            <td>
+                <button type="button" onclick="toggleEditMode('constructionRow')">Edit</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <h3>Zadaci na gradilištu</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Naziv zadatka</th>
+            <th>Opis zadatka</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="task, taskStat : ${construction.zadaci}">
+            <td>
+                <span th:text="${task.naziv}" class="view-mode"></span>
+                <input type="text" th:value="${task.naziv}" th:field="*{construction.zadaci[__${taskStat.index}__].naziv}" class="edit-mode" style="display: none;">
+            </td>
+            <td>
+                <span th:text="${task.opis}" class="view-mode"></span>
+                <textarea th:value="${task.opis}" th:field="*{construction.zadaci[__${taskStat.index}__].opis}" rows="4" class="edit-mode" style="display: none;"></textarea>
+            </td>
+            <td>
+                <button type="button" onclick="toggleEditMode(this)">Edit</button>
+                <button type="button" onclick="deleteTask(this)" th:attr="data-taskId=${task.idGradilista}">Delete</button>
+            </td>
+        </tr>
+
+
+        </tbody>
+    </table>
+
+    <form id="newTaskForm" action="/gradiliste/addTask" method="post">
+        <input type="hidden" name="constructionId" th:value="${construction.idGradilista()}">
+        <input type="text" name="naziv" placeholder="Naziv zadatka">
+        <input type="text" name="opis" placeholder="Opis zadatka">
+        <button type="submit">Add Task</button>
+    </form>
+</div>
+
+<script th:inline="javascript">
+    function deleteTask(button) {
+        var taskId = button.getAttribute('data-taskId');
+        // Send AJAX request to delete task with taskId
+        // Example: You can use fetch or jQuery AJAX to send the request
+        // Example using fetch:
+        fetch('/gradiliste/deleteTask?id=' + taskId, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    // Refresh the page or update the table using JavaScript
+                    location.reload();
+                } else {
+                    console.error('Error deleting task');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    function toggleEditMode(rowId) {
+        var row = document.getElementById(rowId);
+        var viewModeElements = row.querySelectorAll('.view-mode');
+        var editModeElements = row.querySelectorAll('.edit-mode');
+
+        // Check if any element in edit mode is visible (indicating the row is in edit mode)
+        var isInEditMode = Array.from(editModeElements).some(function(element) {
+            return element.style.display !== 'none';
+        });
+
+        // Toggle between view mode and edit mode
+        if (isInEditMode) {
+            // Toggle back to view mode
+            viewModeElements.forEach(function(element) {
+                element.style.display = 'block';
+            });
+            editModeElements.forEach(function(element) {
+                element.style.display = 'none';
+            });
+        } else {
+            // Toggle to edit mode
+            viewModeElements.forEach(function(element) {
+                element.style.display = 'none';
+            });
+            editModeElements.forEach(function(element) {
+                element.style.display = 'block';
+            });
+        }
+    }
+
+    function toggleEditMode(button) {
+        var row = button.closest('tr');
+        var viewModeElements = row.querySelectorAll('.view-mode');
+        var editModeElements = row.querySelectorAll('.edit-mode');
+
+        // Check if any element in edit mode is visible (indicating the row is in edit mode)
+        var isInEditMode = Array.from(editModeElements).some(function(element) {
+            return element.style.display !== 'none';
+        });
+
+        // Toggle between view mode and edit mode
+        if (isInEditMode) {
+            // Toggle back to view mode
+            viewModeElements.forEach(function(element) {
+                element.style.display = 'block';
+            });
+            editModeElements.forEach(function(element) {
+                element.style.display = 'none';
+            });
+        } else {
+            // Toggle to edit mode
+            viewModeElements.forEach(function(element) {
+                element.style.display = 'none';
+            });
+            editModeElements.forEach(function(element) {
+                element.style.display = 'block';
+            });
+        }
+    }
+
+
+</script>
+
+</body>
+</html>

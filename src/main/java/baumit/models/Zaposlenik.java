@@ -3,7 +3,9 @@ package baumit.models;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Zaposlenik {
@@ -23,6 +25,20 @@ public class Zaposlenik {
     @Id
     @Column(name = "idzaposlenika")
     private int idzaposlenika;
+
+    @ManyToMany
+    @JoinTable(name = "radina",
+            joinColumns = @JoinColumn(name = "idzaposlenika"),
+            inverseJoinColumns = @JoinColumn(name = "idgradilista"))
+    private Set<Gradiliste> gradilistes = new LinkedHashSet<>();
+
+    public Set<Gradiliste> getGradilistes() {
+        return gradilistes;
+    }
+
+    public void setGradilistes(Set<Gradiliste> gradilistes) {
+        this.gradilistes = gradilistes;
+    }
 
     public String getIme() {
         return ime;

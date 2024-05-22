@@ -2,7 +2,9 @@ package baumit.models;
 
 import jakarta.persistence.*;
 
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Uloga {
@@ -13,6 +15,17 @@ public class Uloga {
     @Id
     @Column(name = "iduloge")
     private int iduloge;
+
+    @OneToMany(mappedBy = "iduloge")
+    private Set<Korisnik> korisniks = new LinkedHashSet<>();
+
+    public Set<Korisnik> getKorisniks() {
+        return korisniks;
+    }
+
+    public void setKorisniks(Set<Korisnik> korisniks) {
+        this.korisniks = korisniks;
+    }
 
     public String getNaziv() {
         return naziv;

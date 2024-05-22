@@ -3,7 +3,9 @@ package baumit.models;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Stroj {
@@ -17,6 +19,20 @@ public class Stroj {
     @Basic
     @Column(name = "masa")
     private BigDecimal masa;
+
+    @ManyToMany
+    @JoinTable(name = "koristisena",
+            joinColumns = @JoinColumn(name = "serijskibroj"),
+            inverseJoinColumns = @JoinColumn(name = "idgradilista"))
+    private Set<Gradiliste> gradilistes = new LinkedHashSet<>();
+
+    public Set<Gradiliste> getGradilistes() {
+        return gradilistes;
+    }
+
+    public void setGradilistes(Set<Gradiliste> gradilistes) {
+        this.gradilistes = gradilistes;
+    }
 
     public String getNaziv() {
         return naziv;

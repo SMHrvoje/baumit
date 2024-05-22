@@ -8,6 +8,7 @@ public record GradilisteWithTasksDto(
         int idGradilista,
         int idKorisnika,
         String adresa,
-        String naziv
+        String naziv,
+        List<ZadatakDto> zadaci
 ) {
 }
