@@ -1,9 +1,12 @@
 package baumit.controllers;
 
 import baumit.dtos.GradilisteWithTasksDto;
+import baumit.dtos.KorisnikDto;
 import baumit.dtos.StanjeZadatkaDto;
+import baumit.models.Korisnik;
 import baumit.models.Stanjezadatka;
 import baumit.services.GradilisteService;
+import baumit.services.KorisnikService;
 import baumit.services.StanjeZadatkaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,6 +28,7 @@ import java.util.List;
 @RequestMapping("/gradiliste")
 public class GradilisteController {
     private final GradilisteService gradilisteService;
+    private final KorisnikService korisnikService;
     private final StanjeZadatkaService stanjezadatkaService;
 
 
@@ -39,6 +43,8 @@ public class GradilisteController {
         model.addAttribute("construction", gradiliste);
         List<StanjeZadatkaDto> stanjaZadatakasDto = stanjezadatkaService.allStanjaZadataka();
         model.addAttribute("stanjaZadataka", stanjaZadatakasDto);
+        List<KorisnikDto> voditelji = korisnikService.voditelji();
+        model.addAttribute("voditelji", voditelji);
         return "gradiliste";
     };
 

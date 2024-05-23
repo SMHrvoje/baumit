@@ -8,13 +8,14 @@
 </head>
 <body>
 
-<div class="container">
-    <h2> gradilište ISGT</h2>
+<div class="container p-3">
+    <h2 th:text="'Gradilište ' + ${construction.naziv}"></h2>
     <table class="table">
         <thead>
         <tr>
             <th>Naziv</th>
             <th>Adresa</th>
+            <th>Voditelj</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -27,6 +28,11 @@
             <td>
                 <span th:text="${construction.adresa}" class="view-mode-master"></span>
                 <input type="text" th:value="${construction.adresa}" th:field="*{construction.adresa}" class="edit-mode-master" style="display: none; width: 300px;">
+            </td>
+            <td>
+                <select th:disabled="true" th:field="*{construction.idKorisnika}" >
+                    <option th:each="voditelj : ${voditelji}" th:value="${voditelj.idkorisnika()}" th:text="${voditelj.korisnickoime}"></option>
+                </select>
             </td>
             <td>
                 <button type="button"  onclick="toggleEditModeMaster('constructionRow')">Edit</button>
@@ -43,7 +49,8 @@
         <tr>
             <th>Naziv zadatka</th>
             <th>Opis zadatka</th>
-            <th>Action</th>
+            <th>Status</th>
+            <th>Akcija</th>
         </tr>
         </thead>
         <tbody>
@@ -76,7 +83,7 @@
         <input type="hidden" name="constructionId" th:value="${construction.idGradilista()}">
         <input type="text" name="naziv" placeholder="Naziv zadatka">
         <input type="text" name="opis" placeholder="Opis zadatka">
-        <button type="submit">Add Task</button>
+        <button type="submit">Dodaj zadatak</button>
     </form>
 </div>
 
@@ -103,6 +110,7 @@
         var row = document.getElementById(rowId);
         var viewModeElements = row.querySelectorAll('.view-mode-master');
         var editModeElements = row.querySelectorAll('.edit-mode-master');
+        var selectElements = row.querySelectorAll('select');
 
         // Check if any element in edit mode is visible (indicating the row is in edit mode)
         var isInEditMode = Array.from(editModeElements).some(function(element) {
@@ -118,6 +126,10 @@
             editModeElements.forEach(function(element) {
                 element.style.display = 'none';
             });
+            // Disable select elements in view mode
+            selectElements.forEach(function(select) {
+                select.disabled = true;
+            });
         } else {
             // Toggle to edit mode
             viewModeElements.forEach(function(element) {
@@ -125,6 +137,10 @@
             });
             editModeElements.forEach(function(element) {
                 element.style.display = 'block';
+            });
+            // Enable select elements in edit mode
+            selectElements.forEach(function(select) {
+                select.disabled = false;
             });
         }
     }

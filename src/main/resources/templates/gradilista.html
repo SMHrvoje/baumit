@@ -8,23 +8,61 @@
 </head>
 <body>
 
-<div class="container">
-    <h2>Trenutna gradilišta ISGT</h2>
-    <table class="table">
+<div class="container p-3">
+    <div class="row align-items-center mb-3">
+        <div class="col">
+            <h2>Baubrik gradilišta</h2>
+        </div>
+        <div class="col-md-6 col-lg-5">
+            <input type="text" id="searchInput" onkeyup="filterGradilista()" placeholder="Pretraži gradilišta..." class="form-control">
+        </div>
+    </div>
+
+    <table id="gradilistaTable" class="table">
         <thead>
         <tr>
             <th>Naziv</th>
             <th>Adresa</th>
+            <th>Voditelj</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="construction : ${constructions}">
             <td><a th:href="@{'/gradiliste/' + ${construction.idGradilista()}}"><span th:text="${construction.naziv()}"></span></a></td>
             <td th:text="${construction.adresa()}"></td>
+            <td th:text="${korisnikNamesById[construction.idGradilista]}"></td>
         </tr>
         </tbody>
     </table>
+
+    <h2>Novo gradilište</h2>
+    <form id="newConstructionForm" action="/gradilista" method="post" class="py-3">
+        <input type="text" name="naziv" placeholder="Naziv gradilišta">
+        <input type="text" name="adresa" placeholder="Adresa">
+        <button type="submit">Dodaj gradilište</button>
+    </form>
 </div>
+
+<script th:inline="javascript">
+    function filterGradilista() {
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById('gradilistaTable');
+        const trs = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < trs.length; i++) {
+            const td = trs[i].getElementsByTagName('td')[0];
+            if (td) {
+                const textValue = td.textContent || td.innerText;
+                if (textValue.toLowerCase().indexOf(filter) > -1) {
+                    trs[i].style.display = '';
+                } else {
+                    trs[i].style.display = 'none';
+                }
+            }
+        }
+    }
+</script>
 
 </body>
 </html>
