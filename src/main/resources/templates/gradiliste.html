@@ -55,51 +55,68 @@
         <tr>
             <th>Naziv zadatka</th>
             <th>Opis zadatka</th>
-            <th>Status</th>
+            <th>Stanje zadatka</th>
             <th>Akcija</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="task, taskStat : ${construction.zadaci}">
+            <form th:action="@{'/zadatak/' + ${task.idZadatka}}" method="post">
+                <input type="hidden" name="idZadatka" th:value="${task.idZadatka}" >
+                <input type="hidden" name="idGradilista" th:value="${task.idGradilista}" >
             <td>
-                <span th:text="${task.naziv}" class="view-mode"></span>
-                <input type="text" th:value="${task.naziv}" th:field="*{construction.zadaci[__${taskStat.index}__].naziv}" class="edit-mode" style="display: none;">
-            </td>
-            <td>
-                <span th:text="${task.opis}" class="view-mode"></span>
-                <textarea th:value="${task.opis}" th:field="*{construction.zadaci[__${taskStat.index}__].opis}" rows="4" class="edit-mode" style="display: none;"></textarea>
-            </td>
-            <td>
-                <select th:disabled="true" th:field="*{construction.zadaci[__${taskStat.index}__].idStanjaZadatka}" >
-                    <option th:each="state : ${stanjaZadataka}" th:value="${state.idStanjaZadatka}" th:text="${state.naziv}"></option>
-                </select>
-
-            </td>
-            <td>
-                <button type="button" onclick="toggleEditMode(this)">Edit</button>
-                <button type="button" onclick="deleteTask(this)" th:attr="data-taskId=${task.idGradilista}">Delete</button>
-            </td>
+                    <span th:text="${task.naziv}" class="view-mode"></span>
+                    <input type="text" name="naziv" th:value="${task.naziv}"  class="edit-mode" style="display: none;">
+                </td>
+                <td>
+                    <span th:text="${task.opis}" class="view-mode"></span>
+                    <textarea name="opis" th:text="${task.opis}" rows="4"  class="edit-mode" ></textarea>
+                </td>
+                <td>
+                    <select    disabled class="view-mode">
+                        <option th:each="state : ${stanjaZadataka}" th:selected="${state.idStanjaZadatka == task.idStanjaZadatka}" th:value="${state.idStanjaZadatka}" th:text="${state.naziv}"></option>
+                    </select>
+                    <select class="edit-mode" name="idStanjaZadatka"  style="display: none;">
+                        <option th:each="state : ${stanjaZadataka}" th:selected="${state.idStanjaZadatka == task.idStanjaZadatka}" th:value="${state.idStanjaZadatka}" th:text="${state.naziv}"></option>
+                    </select>
+                </td>
+                <td>
+                    <button type="button" onclick="toggleEditMode(this)">Edit</button>
+                    <button type="submit" class="edit-mode" style="display: none;">Save</button>
+                    <button type="button" onclick="deleteTask(this)" th:attr="data-taskId=${task.idZadatka}">Delete</button>
+                </td>
+            </form>
         </tr>
-
-
         </tbody>
     </table>
 
-    <form id="newTaskForm" action="/gradiliste/addTask" method="post">
-        <input type="hidden" name="constructionId" th:value="${construction.idGradilista()}">
+
+    <form id="newTaskForm" action="/zadatak" method="post">
+        <input type="hidden" name="idGradilista" th:value="${construction.idGradilista}">
         <input type="text" name="naziv" placeholder="Naziv zadatka">
         <input type="text" name="opis" placeholder="Opis zadatka">
+        <select name="idStanjaZadatka">
+            <option th:each="state : ${stanjaZadataka}" th:value="${state.idStanjaZadatka}" th:text="${state.naziv}"></option>
+        </select>
         <button type="submit">Dodaj zadatak</button>
     </form>
 </div>
 
 <script th:inline="javascript">
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var textareas = document.querySelectorAll('.edit-mode');
+        textareas.forEach(function(textarea) {
+            textarea.style.display = 'none';
+        });
+    });
+
     function deleteTask(button) {
         var taskId = button.getAttribute('data-taskId');
         // Send AJAX request to delete task with taskId
         // Example: You can use fetch or jQuery AJAX to send the request
         // Example using fetch:
-        fetch('/gradiliste/deleteTask?id=' + taskId, {
+        fetch('/zadatak?id=' + taskId, {
             method: 'DELETE'
         })
             .then(response => {
@@ -158,7 +175,7 @@
         var row = button.closest('tr');
         var viewModeElements = row.querySelectorAll('.view-mode');
         var editModeElements = row.querySelectorAll('.edit-mode');
-        var selectElements = row.querySelectorAll('select');
+        var selects = row.querySelectorAll('select');
 
         // Check if any element in edit mode is visible (indicating the row is in edit mode)
         var isInEditMode = Array.from(editModeElements).some(function(element) {
@@ -174,8 +191,7 @@
             editModeElements.forEach(function(element) {
                 element.style.display = 'none';
             });
-            // Disable select elements in view mode
-            selectElements.forEach(function(select) {
+            selects.forEach(function(select) {
                 select.disabled = true;
             });
         } else {
@@ -186,12 +202,12 @@
             editModeElements.forEach(function(element) {
                 element.style.display = 'block';
             });
-            // Enable select elements in edit mode
-            selectElements.forEach(function(select) {
+            selects.forEach(function(select) {
                 select.disabled = false;
             });
         }
     }
+
 
 
 
