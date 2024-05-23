@@ -1,6 +1,7 @@
 package baumit.services;
 
 import baumit.dtos.GradilisteDto;
+import baumit.dtos.GradilisteRequestDto;
 import baumit.dtos.GradilisteWithTasksDto;
 import baumit.mappers.GradilisteMapper;
 import baumit.models.Gradiliste;
@@ -42,5 +43,22 @@ public class GradilisteService {
        }
 
         return new GradilisteWithTasksDto(1,1,"few","few",new ArrayList<>());
+    }
+
+    public Gradiliste saveGradiliste(GradilisteRequestDto gradilisteDto) {
+        Gradiliste gradiliste = new Gradiliste();
+        gradiliste.setNaziv(gradilisteDto.naziv());
+        gradiliste.setAdresa(gradilisteDto.adresa());
+        gradiliste.setIdkorisnika(gradilisteDto.idKorisnika());
+        return gradilisteRepository.save(gradiliste);
+    }
+
+    public void updateGradiliste(GradilisteDto gradilisteDto) {
+        Gradiliste gradiliste = gradilisteRepository.findById(gradilisteDto.idGradilista())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid construction Id:" + gradilisteDto.idGradilista()));
+        gradiliste.setNaziv(gradilisteDto.naziv());
+        gradiliste.setAdresa(gradilisteDto.adresa());
+        gradiliste.setIdkorisnika(gradilisteDto.idKorisnika());
+        gradilisteRepository.save(gradiliste);
     }
 }

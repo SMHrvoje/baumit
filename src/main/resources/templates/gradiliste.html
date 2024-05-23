@@ -10,37 +10,43 @@
 
 <div class="container p-3">
     <h2 th:text="'Gradilište ' + ${construction.naziv}"></h2>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Naziv</th>
-            <th>Adresa</th>
-            <th>Voditelj</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr id="constructionRow">
-            <td>
-                <span th:text="${construction.naziv}" class="view-mode-master"></span>
-                <input type="text" th:value="${construction.naziv}" th:field="*{construction.naziv}" class="edit-mode-master" style="display: none;">
-            </td>
-            <td>
-                <span th:text="${construction.adresa}" class="view-mode-master"></span>
-                <input type="text" th:value="${construction.adresa}" th:field="*{construction.adresa}" class="edit-mode-master" style="display: none; width: 300px;">
-            </td>
-            <td>
-                <select th:disabled="true" th:field="*{construction.idKorisnika}" >
-                    <option th:each="voditelj : ${voditelji}" th:value="${voditelj.idkorisnika()}" th:text="${voditelj.korisnickoime}"></option>
-                </select>
-            </td>
-            <td>
-                <button type="button"  onclick="toggleEditModeMaster('constructionRow')">Edit</button>
-            </td>
-        </tr>
-
-        </tbody>
-    </table>
+    <form id="editConstructionForm" action="/gradiliste/edit" method="post">
+        <input type="hidden" name="idGradilista" th:value="${construction.idGradilista}"/>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Naziv</th>
+                <th>Adresa</th>
+                <th>Voditelj</th>
+                <th>Akcija</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr id="constructionRow">
+                <td>
+                    <span th:text="${construction.naziv}" class="view-mode-master"></span>
+                    <input type="text" th:value="${construction.naziv}" th:field="*{construction.naziv}" class="edit-mode-master" style="display: none;">
+                </td>
+                <td>
+                    <span th:text="${construction.adresa}" class="view-mode-master"></span>
+                    <input type="text" th:value="${construction.adresa}" th:field="*{construction.adresa}" class="edit-mode-master" style="display: none; width: 300px;">
+                </td>
+                <td>
+                    <select th:disabled="true" th:field="*{construction.idKorisnika}" class="edit-mode-master" style="display: none;">
+                        <option th:each="voditelj : ${voditelji}" th:value="${voditelj.idkorisnika}" th:text="${voditelj.korisnickoime}"></option>
+                    </select>
+                    <span th:each="voditelj : ${voditelji}" th:if="${voditelj.idkorisnika == construction.idKorisnika}" th:text="${voditelj.korisnickoime}" class="view-mode-master"></span>
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <button type="submit" class="edit-mode-master mx-2" style="display: none;">Spremi</button>
+                        <button type="button" id="editButton" onclick="toggleEditModeMaster('constructionRow')">Izmjeni</button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
 
 
     <h3>Zadaci na gradilištu</h3>
@@ -111,6 +117,7 @@
         var viewModeElements = row.querySelectorAll('.view-mode-master');
         var editModeElements = row.querySelectorAll('.edit-mode-master');
         var selectElements = row.querySelectorAll('select');
+        var editButton = document.getElementById('editButton');
 
         // Check if any element in edit mode is visible (indicating the row is in edit mode)
         var isInEditMode = Array.from(editModeElements).some(function(element) {
@@ -130,6 +137,7 @@
             selectElements.forEach(function(select) {
                 select.disabled = true;
             });
+            editButton.textContent = 'Izmjeni';
         } else {
             // Toggle to edit mode
             viewModeElements.forEach(function(element) {
@@ -142,6 +150,7 @@
             selectElements.forEach(function(select) {
                 select.disabled = false;
             });
+            editButton.textContent = 'Odustani';
         }
     }
 

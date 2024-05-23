@@ -1,8 +1,6 @@
 package baumit.controllers;
 
-import baumit.dtos.GradilisteWithTasksDto;
-import baumit.dtos.KorisnikDto;
-import baumit.dtos.StanjeZadatkaDto;
+import baumit.dtos.*;
 import baumit.models.Korisnik;
 import baumit.models.Stanjezadatka;
 import baumit.services.GradilisteService;
@@ -16,9 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -47,5 +43,11 @@ public class GradilisteController {
         model.addAttribute("voditelji", voditelji);
         return "gradiliste";
     };
+
+    @PostMapping("/edit")
+    public String editGradiliste(@ModelAttribute GradilisteDto gradilisteDto) {
+        gradilisteService.updateGradiliste(gradilisteDto);
+        return "redirect:/gradiliste/" + gradilisteDto.idGradilista();
+    }
 
 }

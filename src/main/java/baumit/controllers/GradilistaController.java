@@ -1,6 +1,7 @@
 package baumit.controllers;
 
 import baumit.dtos.GradilisteDto;
+import baumit.dtos.GradilisteRequestDto;
 import baumit.dtos.GradilisteWithTasksDto;
 import baumit.dtos.KorisnikDto;
 import baumit.models.Gradiliste;
@@ -12,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.HashMap;
@@ -39,6 +42,15 @@ public class GradilistaController {
         model.addAttribute("constructions", constructions);
         model.addAttribute("korisnikNamesById", korisnikNamesById);
 
+        List<KorisnikDto> voditelji = korisnikService.voditelji();
+        model.addAttribute("voditelji", voditelji);
+
         return "gradilista";
+    }
+
+    @PostMapping
+    public String addGradiliste(@ModelAttribute GradilisteRequestDto gradilisteDto) {
+        gradilisteService.saveGradiliste(gradilisteDto);
+        return "redirect:/gradilista";
     }
 }

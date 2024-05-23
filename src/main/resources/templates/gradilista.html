@@ -39,6 +39,9 @@
     <form id="newConstructionForm" action="/gradilista" method="post" class="py-3">
         <input type="text" name="naziv" placeholder="Naziv gradilišta">
         <input type="text" name="adresa" placeholder="Adresa">
+        <select name="idKorisnika">
+            <option th:each="voditelj : ${voditelji}" th:value="${voditelj.idkorisnika()}" th:text="${voditelj.korisnickoime()}"></option>
+        </select>
         <button type="submit">Dodaj gradilište</button>
     </form>
 </div>
