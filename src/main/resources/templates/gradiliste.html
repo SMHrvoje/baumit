@@ -64,19 +64,19 @@
             <form th:action="@{'/zadatak/' + ${task.idZadatka}}" method="post">
                 <input type="hidden" name="idZadatka" th:value="${task.idZadatka}" >
                 <input type="hidden" name="idGradilista" th:value="${task.idGradilista}" >
-            <td>
+                <td>
                     <span th:text="${task.naziv}" class="view-mode"></span>
-                    <input type="text" name="naziv" th:value="${task.naziv}"  class="edit-mode" style="display: none;">
+                    <input type="text" name="naziv" th:value="${task.naziv}" class="edit-mode" style="display: none; width: 100%;">
                 </td>
                 <td>
                     <span th:text="${task.opis}" class="view-mode"></span>
-                    <textarea name="opis" th:text="${task.opis}" rows="4"  class="edit-mode" ></textarea>
+                    <textarea name="opis" th:text="${task.opis}" rows="4" class="edit-mode" style="width: 100%;"></textarea>
                 </td>
                 <td>
-                    <select    disabled class="view-mode">
+                    <select disabled class="view-mode" style="width: 100%;">
                         <option th:each="state : ${stanjaZadataka}" th:selected="${state.idStanjaZadatka == task.idStanjaZadatka}" th:value="${state.idStanjaZadatka}" th:text="${state.naziv}"></option>
                     </select>
-                    <select class="edit-mode" name="idStanjaZadatka"  style="display: none;">
+                    <select class="edit-mode" name="idStanjaZadatka" style="display: none; width: 100%;">
                         <option th:each="state : ${stanjaZadataka}" th:selected="${state.idStanjaZadatka == task.idStanjaZadatka}" th:value="${state.idStanjaZadatka}" th:text="${state.naziv}"></option>
                     </select>
                 </td>
@@ -113,21 +113,23 @@
 
     function deleteTask(button) {
         var taskId = button.getAttribute('data-taskId');
-        // Send AJAX request to delete task with taskId
-        // Example: You can use fetch or jQuery AJAX to send the request
-        // Example using fetch:
-        fetch('/zadatak?id=' + taskId, {
-            method: 'DELETE'
-        })
-            .then(response => {
-                if (response.ok) {
-                    // Refresh the page or update the table using JavaScript
-                    location.reload();
-                } else {
-                    console.error('Error deleting task');
-                }
+        // Show confirmation dialog
+        var confirmDelete = confirm("Jeste li sigurni da želite obrisati?");
+        if (confirmDelete) {
+            // If user confirms, send the delete request
+            fetch('/zadatak?id=' + taskId, {
+                method: 'DELETE'
             })
-            .catch(error => console.error('Error:', error));
+                .then(response => {
+                    if (response.ok) {
+                        // Refresh the page or update the table using JavaScript
+                        location.reload();
+                    } else {
+                        console.error('Error deleting task');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
     }
     function toggleEditModeMaster(rowId) {
         var row = document.getElementById(rowId);
