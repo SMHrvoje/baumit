@@ -10,7 +10,8 @@ public class ZadatakMapper {
                 zadatak.getIdzadatka(),
                 zadatak.getIdgradilista(),
                 zadatak.getNaziv(),
-                zadatak.getOpis()
+                zadatak.getOpis(),
+                zadatak.getIdstanjazadatka()
         );
     }
 }

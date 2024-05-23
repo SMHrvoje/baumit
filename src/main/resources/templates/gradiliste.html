@@ -57,6 +57,12 @@
                 <textarea th:value="${task.opis}" th:field="*{construction.zadaci[__${taskStat.index}__].opis}" rows="4" class="edit-mode" style="display: none;"></textarea>
             </td>
             <td>
+                <select th:disabled="true" th:field="*{construction.zadaci[__${taskStat.index}__].idStanjaZadatka}" >
+                    <option th:each="state : ${stanjaZadataka}" th:value="${state.idStanjaZadatka}" th:text="${state.naziv}"></option>
+                </select>
+
+            </td>
+            <td>
                 <button type="button" onclick="toggleEditMode(this)">Edit</button>
                 <button type="button" onclick="deleteTask(this)" th:attr="data-taskId=${task.idGradilista}">Delete</button>
             </td>
@@ -127,6 +133,7 @@
         var row = button.closest('tr');
         var viewModeElements = row.querySelectorAll('.view-mode');
         var editModeElements = row.querySelectorAll('.edit-mode');
+        var selectElements = row.querySelectorAll('select');
 
         // Check if any element in edit mode is visible (indicating the row is in edit mode)
         var isInEditMode = Array.from(editModeElements).some(function(element) {
@@ -142,6 +149,10 @@
             editModeElements.forEach(function(element) {
                 element.style.display = 'none';
             });
+            // Disable select elements in view mode
+            selectElements.forEach(function(select) {
+                select.disabled = true;
+            });
         } else {
             // Toggle to edit mode
             viewModeElements.forEach(function(element) {
@@ -150,8 +161,13 @@
             editModeElements.forEach(function(element) {
                 element.style.display = 'block';
             });
+            // Enable select elements in edit mode
+            selectElements.forEach(function(select) {
+                select.disabled = false;
+            });
         }
     }
+
 
 
 </script>

@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public class GradilisteService {
     private final GradilisteRepository gradilisteRepository;
     private final ZadatakRepository zadatakRepository;
+    private final GradilisteMapper gradilisteMapper;
 
     public List<GradilisteDto> allConstructionsDtos(){
          List<Gradiliste> gradilista = gradilisteRepository.findAll();
@@ -37,7 +38,7 @@ public class GradilisteService {
        Optional<Gradiliste> gradilisteOptional = gradilisteRepository.findById(idGradiliste);
        if (gradilisteOptional.isPresent()){
            Gradiliste gradiliste = gradilisteOptional.get();
-           return GradilisteMapper.gradilisteToGradilisteWithTasksDto(gradiliste);
+           return gradilisteMapper.gradilisteToGradilisteWithTasksDto(gradiliste);
        }
 
         return new GradilisteWithTasksDto(1,1,"few","few",new ArrayList<>());

@@ -4,6 +4,7 @@ public record ZadatakDto(
         int idZadatka,
         int idGradilista,
         String naziv,
-        String opis
+        String opis,
+        int idStanjaZadatka
 ) {
 }
