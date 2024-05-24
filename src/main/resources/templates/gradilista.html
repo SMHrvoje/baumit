@@ -36,13 +36,17 @@
     </table>
 
     <h2>Novo gradilište</h2>
-    <form id="newConstructionForm" action="/gradilista" method="post" class="py-3">
-        <input type="text" name="naziv" placeholder="Naziv gradilišta">
-        <input type="text" name="adresa" placeholder="Adresa">
-        <select name="idKorisnika">
-            <option th:each="voditelj : ${voditelji}" th:value="${voditelj.idkorisnika()}" th:text="${voditelj.korisnickoime()}"></option>
-        </select>
-        <button type="submit">Dodaj gradilište</button>
+    <form id="newConstructionForm" action="/gradilista" method="post" class="py-3" style="width: 100%;">
+        <table style="width: 100%;">
+            <tr>
+                <td style="width: 25%;"><input style="width: 80%;" type="text" name="naziv" placeholder="Naziv gradilišta"></td>
+                <td style="width: 30%;"><input style="width: 80%;" type="text" name="adresa" placeholder="Adresa"></td>
+                <td style="width: 25%;"><select style="width: 80%;" name="idKorisnika">
+                    <option th:each="voditelj : ${voditelji}" th:value="${voditelj.idkorisnika()}" th:text="${voditelj.korisnickoime()}"></option>
+                </select></td>
+                <td style="width: 15%;"><button type="submit">Dodaj gradilište</button></td>
+            <tr>
+        </table>
     </form>
 </div>
 

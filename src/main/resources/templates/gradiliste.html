@@ -12,7 +12,7 @@
     <h2 th:text="'Gradilište ' + ${construction.naziv}"></h2>
     <form id="editConstructionForm" action="/gradiliste/edit" method="post">
         <input type="hidden" name="idGradilista" th:value="${construction.idGradilista}"/>
-        <table class="table">
+        <table class="table" style="width: 100%;">
             <thead>
             <tr>
                 <th>Naziv</th>
@@ -23,24 +23,24 @@
             </thead>
             <tbody>
             <tr id="constructionRow">
-                <td>
+                <td style="width: 25%;">
                     <span th:text="${construction.naziv}" class="view-mode-master"></span>
                     <input type="text" th:value="${construction.naziv}" th:field="*{construction.naziv}" class="edit-mode-master" style="display: none;">
                 </td>
-                <td>
+                <td style="width: 30%;">
                     <span th:text="${construction.adresa}" class="view-mode-master"></span>
                     <input type="text" th:value="${construction.adresa}" th:field="*{construction.adresa}" class="edit-mode-master" style="display: none; width: 300px;">
                 </td>
-                <td>
+                <td style="width: 25%;">
                     <select th:disabled="true" th:field="*{construction.idKorisnika}" class="edit-mode-master" style="display: none;">
                         <option th:each="voditelj : ${voditelji}" th:value="${voditelj.idkorisnika}" th:text="${voditelj.korisnickoime}"></option>
                     </select>
                     <span th:each="voditelj : ${voditelji}" th:if="${voditelj.idkorisnika == construction.idKorisnika}" th:text="${voditelj.korisnickoime}" class="view-mode-master"></span>
                 </td>
-                <td>
+                <td style="width: 20%;">
                     <div class="btn-group">
-                        <button type="submit" class="edit-mode-master mx-2" style="display: none;">Spremi</button>
-                        <button type="button" id="editButton" onclick="toggleEditModeMaster('constructionRow')">Izmjeni</button>
+                        <button type="submit" class="edit-mode-master me-2" style="display: none;">Spremi</button>
+                        <button type="button" id="editButtonConstruction" onclick="toggleEditModeMaster('constructionRow')">Izmjeni</button>
                     </div>
                 </td>
             </tr>
@@ -50,7 +50,7 @@
 
 
     <h3>Zadaci na gradilištu</h3>
-    <table class="table">
+    <table class="table" style="width: 100%;">
         <thead>
         <tr>
             <th>Naziv zadatka</th>
@@ -64,15 +64,15 @@
             <form th:action="@{'/zadatak/' + ${task.idZadatka}}" method="post">
                 <input type="hidden" name="idZadatka" th:value="${task.idZadatka}" >
                 <input type="hidden" name="idGradilista" th:value="${task.idGradilista}" >
-                <td>
+                <td style="width: 25%;">
                     <span th:text="${task.naziv}" class="view-mode"></span>
                     <input type="text" name="naziv" th:value="${task.naziv}" class="edit-mode" style="display: none; width: 100%;">
                 </td>
-                <td>
+                <td style="width: 30%;">
                     <span th:text="${task.opis}" class="view-mode"></span>
                     <textarea name="opis" th:text="${task.opis}" rows="4" class="edit-mode" style="width: 100%;"></textarea>
                 </td>
-                <td>
+                <td style="width: 25%;">
                     <select disabled class="view-mode" style="width: 100%;">
                         <option th:each="state : ${stanjaZadataka}" th:selected="${state.idStanjaZadatka == task.idStanjaZadatka}" th:value="${state.idStanjaZadatka}" th:text="${state.naziv}"></option>
                     </select>
@@ -80,29 +80,31 @@
                         <option th:each="state : ${stanjaZadataka}" th:selected="${state.idStanjaZadatka == task.idStanjaZadatka}" th:value="${state.idStanjaZadatka}" th:text="${state.naziv}"></option>
                     </select>
                 </td>
-                <td>
-                    <button type="button" onclick="toggleEditMode(this)">Edit</button>
-                    <button type="submit" class="edit-mode" style="display: none;">Save</button>
-                    <button type="button" onclick="deleteTask(this)" th:attr="data-taskId=${task.idZadatka}">Delete</button>
+                <td style="width: 20%;">
+                    <div class="btn-group d-flex justify-content-start">
+                        <button type="submit" class="edit-mode me-2" style="display: none;">Spremi</button>
+                        <button type="button" id="editButtonTask" class="me-2" onclick="toggleEditMode(this)">Izmjeni</button>
+                        <button type="button" onclick="deleteTask(this)" th:attr="data-taskId=${task.idZadatka}">Obriši</button>
+                    </div>
                 </td>
             </form>
         </tr>
         </tbody>
     </table>
 
-
+    <h2>Novi zadatak</h2>
     <form id="newTaskForm" action="/zadatak" method="post">
         <input type="hidden" name="idGradilista" th:value="${construction.idGradilista}">
         <table style="width: 100%;">
             <tr>
-                <td style="width: 20%;"><input type="text" name="naziv" placeholder="Naziv zadatka" style="width: 80%;"></td>
-                <td style="width: 40%;"><input type="text" name="opis" placeholder="Opis zadatka" style="width: 80%;"></td>
-                <td style="width: 20%;">
-                    <select name="idStanjaZadatka" style="width: 80%;">
+                <td style="width: 25%;"><input type="text" name="naziv" placeholder="Naziv zadatka" style="width: 80%;"></td>
+                <td style="width: 30%;"><input type="text" name="opis" placeholder="Opis zadatka" style="width: 80%;"></td>
+                <td style="width: 25%;">
+                    <select name="idStanjaZadatka" style="width: 100%;">
                         <option th:each="state : ${stanjaZadataka}" th:value="${state.idStanjaZadatka}" th:text="${state.naziv}"></option>
                     </select>
                 </td>
-                <td style="width: 10%;"><button type="submit">Dodaj zadatak</button></td>
+                <td style="width: 20%;"><button class="mx-2" type="submit">Dodaj zadatak</button></td>
             </tr>
         </table>
     </form>
@@ -145,7 +147,7 @@
         var viewModeElements = row.querySelectorAll('.view-mode-master');
         var editModeElements = row.querySelectorAll('.edit-mode-master');
         var selectElements = row.querySelectorAll('select');
-        var editButton = document.getElementById('editButton');
+        var editButton = document.getElementById('editButtonConstruction');
 
         // Check if any element in edit mode is visible (indicating the row is in edit mode)
         var isInEditMode = Array.from(editModeElements).some(function(element) {
@@ -187,6 +189,7 @@
         var viewModeElements = row.querySelectorAll('.view-mode');
         var editModeElements = row.querySelectorAll('.edit-mode');
         var selects = row.querySelectorAll('select');
+        var editButton = document.getElementById('editButtonTask');
 
         // Check if any element in edit mode is visible (indicating the row is in edit mode)
         var isInEditMode = Array.from(editModeElements).some(function(element) {
@@ -205,6 +208,7 @@
             selects.forEach(function(select) {
                 select.disabled = true;
             });
+            editButton.textContent = 'Izmjeni';
         } else {
             // Toggle to edit mode
             viewModeElements.forEach(function(element) {
@@ -216,6 +220,7 @@
             selects.forEach(function(select) {
                 select.disabled = false;
             });
+            editButton.textContent = 'Odustani';
         }
     }
 
