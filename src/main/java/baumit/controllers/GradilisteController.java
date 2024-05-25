@@ -11,12 +11,17 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Tag(name = "Construction Controller", description = "APIs related to managing specific construction")
@@ -45,9 +50,16 @@ public class GradilisteController {
     };
 
     @PostMapping("/edit")
-    public String editGradiliste(@ModelAttribute GradilisteDto gradilisteDto) {
+    public ResponseEntity<Map<String,Object>> editGradiliste(@Valid @ModelAttribute GradilisteDto gradilisteDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(System.out::println);
+            Map<String, Object> response = new HashMap<>();
+            response.put("error", bindingResult.getFieldError().getDefaultMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
         gradilisteService.updateGradiliste(gradilisteDto);
-        return "redirect:/gradiliste/" + gradilisteDto.idGradilista();
+        return ResponseEntity.ok().build();
+
     }
 
 }

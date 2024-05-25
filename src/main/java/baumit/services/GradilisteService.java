@@ -25,13 +25,6 @@ public class GradilisteService {
 
     public List<GradilisteDto> allConstructionsDtos(){
          List<Gradiliste> gradilista = gradilisteRepository.findAll();
-         gradilista.forEach(gradiliste -> {
-             Optional<List<Zadatak>> zadaciGradilista = zadatakRepository.getZadatakByIdgradilistaEquals(gradiliste.getIdgradilista());
-             if (zadaciGradilista.isPresent()){
-                 List<Zadatak> zadaci = zadaciGradilista.get();
-                 zadaci.forEach(zadatak -> System.out.println(zadatak.getNaziv()));
-             }
-         });
          return gradilista.stream().map(GradilisteMapper::gradilisteToGradilisteDto).collect(Collectors.toList());
 
     }
