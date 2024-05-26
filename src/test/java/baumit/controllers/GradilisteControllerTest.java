@@ -69,7 +69,7 @@ class GradilisteControllerTest {
 
     @Test
     void testEditGradiliste() throws Exception {
-        GradilisteDto gradilisteDto = new GradilisteDto(1, 1, "Test Adresa", "Test Naziv");
+        GradilisteDto gradilisteDto = new GradilisteDto(1, 1, "Test Adresa 22, 42240 Varazdin, Hrvatska", "Test Naziv");
 
         mockMvc.perform(post("/gradiliste/edit")
                         .flashAttr("gradilisteDto", gradilisteDto))

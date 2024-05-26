@@ -68,7 +68,7 @@ class GradilistaControllerTest {
 
     @Test
     void testAddGradilisteValid() throws Exception {
-        GradilisteRequestDto gradilisteDto1 = new GradilisteRequestDto(1, "Adresa", "Naziv");
+        GradilisteRequestDto gradilisteDto1 = new GradilisteRequestDto(1, "Adresa 123, 42222 Split, Hrvatska", "Naziv");
 
         mockMvc.perform(post("/gradilista")
                         .flashAttr("gradilisteRequestDto", gradilisteDto1))

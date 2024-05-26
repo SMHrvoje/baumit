@@ -30,7 +30,7 @@ public class GradilistaControllerIntegrationTest {
 
     @Test
     void testCreateGradiliste() throws Exception {
-        GradilisteRequestDto gradilisteDto = new GradilisteRequestDto(1, "Test Address", "Test Name");
+        GradilisteRequestDto gradilisteDto = new GradilisteRequestDto(1, "Test Address 123, 44444 Osijek, Hrvatska", "Test Name");
         long size = gradilisteRepository.count();
 
         mockMvc.perform(post("/gradilista")
