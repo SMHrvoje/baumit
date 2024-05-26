@@ -85,7 +85,7 @@
                 <td style="width: 20%;">
                     <div class="btn-group d-flex justify-content-start">
                         <button type="button" class="edit-mode me-2" th:attr="onclick=|editTask('${task.idZadatka}')|"  style="display: none;">Spremi</button>
-                        <button type="button" id="editButtonTask" class="me-2" th:attr="onclick=|toggleEditMode(this,'${task.idZadatka}')|">Izmjeni</button>
+                        <button type="button" th:attr="id=|edit-${task.idZadatka}|, onclick=|toggleEditMode(this,'${task.idZadatka}')|" class="me-2">Izmjeni</button>
                         <button type="button" onclick="deleteTask(this)" th:attr="data-taskId=${task.idZadatka}">Obriši</button>
                     </div>
                 </td>
@@ -208,7 +208,8 @@
         var viewModeElements = row.querySelectorAll('.view-mode');
         var editModeElements = row.querySelectorAll('.edit-mode');
         var selects = row.querySelectorAll('select');
-        var editButton = document.getElementById('editButtonTask');
+        let editButtonId = "edit-"+taskId
+        var editButton = document.getElementById(editButtonId);
 
         var isInEditMode = Array.from(editModeElements).some(function(element) {
             return element.style.display !== 'none';
