@@ -5,6 +5,8 @@ import jakarta.validation.ConstraintValidatorContext;
 
 public class ValidConstructionAddressValidator implements ConstraintValidator<ValidConstructionAddress, String> {
 
+    private static final String addressRegexToMatch = "^[\\p{L}\\d\\s]+, \\d{4,7} [\\p{L}\\d\\s]+, [\\p{L}\\d\\s]+$";
+
     @Override
     public void initialize(ValidConstructionAddress constraintAnnotation) {
     }
@@ -15,6 +17,7 @@ public class ValidConstructionAddressValidator implements ConstraintValidator<Va
             return false;
         }
         //todo napraviti neku logiku
-        return true;
+
+        return value.matches(addressRegexToMatch);
     }
 }

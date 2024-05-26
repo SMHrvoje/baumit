@@ -18,7 +18,7 @@
             <thead>
             <tr>
                 <th>Naziv</th>
-                <th>Adresa</th>
+                <th title="adresa oblika: ulica, pbr grad, država">Adresa <span class="tooltip-icon">ℹ️</span></th>
                 <th>Voditelj</th>
                 <th>Akcija</th>
             </tr>
@@ -85,7 +85,7 @@
                 <td style="width: 20%;">
                     <div class="btn-group d-flex justify-content-start">
                         <button type="button" class="edit-mode me-2" th:attr="onclick=|editTask('${task.idZadatka}')|"  style="display: none;">Spremi</button>
-                        <button type="button" id="editButtonTask" class="me-2" onclick="toggleEditMode(this)">Izmjeni</button>
+                        <button type="button" id="editButtonTask" class="me-2" th:attr="onclick=|toggleEditMode(this,'${task.idZadatka}')|">Izmjeni</button>
                         <button type="button" onclick="deleteTask(this)" th:attr="data-taskId=${task.idZadatka}">Obriši</button>
                     </div>
                 </td>
@@ -160,41 +160,40 @@
                 .catch(error => console.error('Error:', error));
         }
     }
+
+
+
     function toggleEditModeMaster(rowId) {
         var row = document.getElementById(rowId);
+        let form = document.getElementById("editConstructionForm");
         var viewModeElements = row.querySelectorAll('.view-mode-master');
         var editModeElements = row.querySelectorAll('.edit-mode-master');
         var selectElements = row.querySelectorAll('select');
         var editButton = document.getElementById('editButtonConstruction');
 
-        // Check if any element in edit mode is visible (indicating the row is in edit mode)
         var isInEditMode = Array.from(editModeElements).some(function(element) {
             return element.style.display !== 'none';
         });
 
-        // Toggle between view mode and edit mode
         if (isInEditMode) {
-            // Toggle back to view mode
             viewModeElements.forEach(function(element) {
                 element.style.display = 'block';
             });
             editModeElements.forEach(function(element) {
                 element.style.display = 'none';
             });
-            // Disable select elements in view mode
             selectElements.forEach(function(select) {
                 select.disabled = true;
             });
+            form.reset()
             editButton.textContent = 'Izmjeni';
         } else {
-            // Toggle to edit mode
             viewModeElements.forEach(function(element) {
                 element.style.display = 'none';
             });
             editModeElements.forEach(function(element) {
                 element.style.display = 'block';
             });
-            // Enable select elements in edit mode
             selectElements.forEach(function(select) {
                 select.disabled = false;
             });
@@ -202,21 +201,20 @@
         }
     }
 
-    function toggleEditMode(button) {
+    function toggleEditMode(button,taskId) {
         var row = button.closest('tr');
+        let idToFind = "form-"+taskId
+        let form = document.getElementById(idToFind)
         var viewModeElements = row.querySelectorAll('.view-mode');
         var editModeElements = row.querySelectorAll('.edit-mode');
         var selects = row.querySelectorAll('select');
         var editButton = document.getElementById('editButtonTask');
 
-        // Check if any element in edit mode is visible (indicating the row is in edit mode)
         var isInEditMode = Array.from(editModeElements).some(function(element) {
             return element.style.display !== 'none';
         });
 
-        // Toggle between view mode and edit mode
         if (isInEditMode) {
-            // Toggle back to view mode
             viewModeElements.forEach(function(element) {
                 element.style.display = 'block';
             });
@@ -226,9 +224,9 @@
             selects.forEach(function(select) {
                 select.disabled = true;
             });
+            form.reset()
             editButton.textContent = 'Izmjeni';
         } else {
-            // Toggle to edit mode
             viewModeElements.forEach(function(element) {
                 element.style.display = 'none';
             });

@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 public record ZadatakRequestDto(
         int idGradilista,
         @Size(min = 1, message = "Naziv mora postojati")
-        @Size(max = 40, message = "Naziv mora biti maksimalno 30 znakova")
+        @Size(max = 40, message = "Naziv mora biti maksimalno 40 znakova")
         String naziv,
 
         @ValidTaskDescription
