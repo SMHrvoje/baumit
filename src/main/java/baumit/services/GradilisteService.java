@@ -25,7 +25,7 @@ public class GradilisteService {
 
     public List<GradilisteDto> allConstructionsDtos(){
          List<Gradiliste> gradilista = gradilisteRepository.findAll();
-         return gradilista.stream().map(GradilisteMapper::gradilisteToGradilisteDto).collect(Collectors.toList());
+         return gradilista.stream().map(gradilisteMapper::gradilisteToGradilisteDto).collect(Collectors.toList());
 
     }
     public GradilisteWithTasksDto constructionWithTasksDtos(int idGradiliste){

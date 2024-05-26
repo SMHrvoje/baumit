@@ -11,7 +11,7 @@ public record ZadatakDto(
         String naziv,
         @ValidTaskDescription
         @Size(max = 300, message = "Opis mora biti maksimalno 300 znakova")
-        @Size(min = 300, message = "Opis mora postojati")
+        @Size(min = 1, message = "Opis mora postojati")
         String opis,
         int idStanjaZadatka
 ) {

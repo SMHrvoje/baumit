@@ -36,6 +36,6 @@ public class KorisnikService {
 
     public String getKorisnikById(int korisnikId) {
         Optional<Korisnik> korisnikOptional = korisnikRepository.findById(korisnikId);
-        return korisnikOptional.map(Korisnik::getKorisnickoime).orElse("Unknown"); // Or any other field you want to display
+        return korisnikOptional.map(Korisnik::getKorisnickoime).orElse("Unknown");
     }
 }

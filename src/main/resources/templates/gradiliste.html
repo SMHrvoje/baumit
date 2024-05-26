@@ -41,7 +41,7 @@
                 </td>
                 <td style="width: 20%;">
                     <div class="btn-group">
-                        <button type="button" class="edit-mode-master me-2" onclick="editConstructionForm()" style="display: none;">Spremi</button>
+                        <button type="button" class="edit-mode-master me-2" th:attr="onclick=|editCon('${construction.idGradilista}')|" style="display: none;">Spremi</button>
                         <button type="button" id="editButtonConstruction" onclick="toggleEditModeMaster('constructionRow')">Izmjeni</button>
                     </div>
                 </td>
@@ -279,7 +279,7 @@
             .catch(error => console.error('Error:', error));
 
     }
-    function editConstructionForm() {
+    function editTask(id) {
         var form = document.getElementById('form-' + id);
         let url = "/zadatak/"+id
         console.log("id je "+ id)

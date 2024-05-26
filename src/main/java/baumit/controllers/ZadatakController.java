@@ -22,14 +22,14 @@ public class ZadatakController {
 
 
     @PostMapping("")
-    public ResponseEntity<Map<String,Object>> addTask(@Valid @ModelAttribute ZadatakRequestDto zadatakDto, BindingResult bindingResult){
+    public ResponseEntity<Map<String,Object>> addTask(@Valid @ModelAttribute ZadatakRequestDto zadatakRequestDto, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
-            //bindingResult.getAllErrors().forEach(System.out::println);
+            bindingResult.getAllErrors().forEach(System.out::println);
             Map<String, Object> response = new HashMap<>();
             response.put("error", bindingResult.getFieldError().getDefaultMessage());
             return ResponseEntity.badRequest().body(response);
         }
-        zadatakService.saveNewZadatak(zadatakDto);
+        zadatakService.saveNewZadatak(zadatakRequestDto);
         return ResponseEntity.ok().build();
     };
 

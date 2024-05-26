@@ -2,13 +2,9 @@ package baumit.controllers;
 
 import baumit.dtos.GradilisteDto;
 import baumit.dtos.GradilisteRequestDto;
-import baumit.dtos.GradilisteWithTasksDto;
 import baumit.dtos.KorisnikDto;
-import baumit.models.Gradiliste;
-import baumit.models.Korisnik;
 import baumit.services.GradilisteService;
 import baumit.services.KorisnikService;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +27,7 @@ public class GradilistaController {
     private final GradilisteService gradilisteService;
     private final KorisnikService korisnikService;
 
-    @GetMapping("")
+    @GetMapping
     public String getGradilista(Model model) {
         List<GradilisteDto> constructions = gradilisteService.allConstructionsDtos();
         Map<Integer, String> korisnikNamesById = new HashMap<>();
@@ -48,18 +44,18 @@ public class GradilistaController {
         List<KorisnikDto> voditelji = korisnikService.voditelji();
         model.addAttribute("voditelji", voditelji);
 
-        return "gradilista";
+        return "gradilistaView";
     }
 
     @PostMapping
-    public ResponseEntity<Map<String,Object>> addGradiliste(@Valid @ModelAttribute GradilisteRequestDto gradilisteDto, BindingResult bindingResult) {
+    public ResponseEntity<Map<String,Object>> addGradiliste(@Valid @ModelAttribute GradilisteRequestDto gradilisteRequestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             bindingResult.getAllErrors().forEach(System.out::println);
             Map<String, Object> response = new HashMap<>();
             response.put("error", bindingResult.getFieldError().getDefaultMessage());
             return ResponseEntity.badRequest().body(response);
         }
-        gradilisteService.saveGradiliste(gradilisteDto);
+        gradilisteService.saveGradiliste(gradilisteRequestDto);
         return ResponseEntity.ok().build();
     }
 }

@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class GradilisteMapper {
     private final StanjezadatkaRepository stanjezadatkaRepository;
 
-    public static GradilisteDto gradilisteToGradilisteDto(Gradiliste gradiliste){
+    public GradilisteDto gradilisteToGradilisteDto(Gradiliste gradiliste){
         return new GradilisteDto(
                 gradiliste.getIdgradilista(),
                 gradiliste.getIdkorisnika(),
